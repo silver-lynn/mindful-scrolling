@@ -1,18 +1,24 @@
 # Mindful Scrolling · Windows Public Beta
 
+<p align="center">
+  <img src="WindowsApp/assets/MindfulTimer.png" width="112" alt="Mindful Timer icon">
+</p>
+
 一个给 AI 时代 builder 的轻量悬浮计时器：在开始浏览或研究前写下目的，正向计时，随手记录，最后把真正值得带走的东西留进笔记库。
 
 ![Mindful Timer 白天模式](WindowsApp/preview/light-01-start.png)
 
 ## 下载
 
-从 [Releases](https://github.com/silver-lynn/mindful-scrolling/releases) 下载最新的 `MindfulTimer-Windows-v0.6.zip`，解压后双击：
+从 [Releases](https://github.com/silver-lynn/mindful-scrolling/releases) 下载最新的 `MindfulTimer-Windows-v0.7.zip`，解压后双击：
 
 ```text
 Start Mindful Timer.cmd
 ```
 
 应用基于 Windows 自带的 PowerShell 5.1 与 WPF，不需要安装运行库，也不联网。
+
+首次运行会自动创建带专用图标的桌面快捷方式，以后直接双击 `Mindful Timer` 图标即可启动。
 
 > 当前是未签名的公开测试版。Windows 可能显示脚本或来源提示；请只从本仓库 Releases 下载，并核对 Release 中提供的 SHA-256。
 

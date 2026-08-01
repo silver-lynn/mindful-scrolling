@@ -26,6 +26,7 @@ $script:CurrentNotePath = Join-Path $script:DataDir "current-note.md"
 $script:RecordsJsonPath = Join-Path $script:DataDir "records.json"
 $script:RecordsMarkdownPath = Join-Path $script:DataDir "records.md"
 $script:SettingsPath = Join-Path $script:DataDir "settings.json"
+$script:IconPath = Join-Path $script:AppDir "assets\MindfulTimer.ico"
 
 $xamlPath = Join-Path $script:AppDir "App.xaml"
 $stringsPath = Join-Path $script:AppDir "strings.json"
@@ -39,6 +40,9 @@ try {
 }
 finally {
     $xmlReader.Dispose()
+}
+if (Test-Path -LiteralPath $script:IconPath) {
+    $window.Icon = [System.Windows.Media.Imaging.BitmapFrame]::Create([Uri]::new($script:IconPath))
 }
 
 if ($ValidateOnly) {
@@ -419,6 +423,42 @@ function Discard-Draft {
     }
 }
 
+function Ensure-DesktopShortcut {
+    param([string]$TargetDirectory = "")
+
+    try {
+        $desktopDirectory = if ([string]::IsNullOrWhiteSpace($TargetDirectory)) {
+            [Environment]::GetFolderPath([Environment+SpecialFolder]::DesktopDirectory)
+        }
+        else {
+            [System.IO.Path]::GetFullPath($TargetDirectory)
+        }
+        if ([string]::IsNullOrWhiteSpace($desktopDirectory)) { return $false }
+        if (-not (Test-Path -LiteralPath $desktopDirectory)) {
+            New-Item -ItemType Directory -Path $desktopDirectory | Out-Null
+        }
+
+        $shortcutPath = Join-Path $desktopDirectory "Mindful Timer.lnk"
+        $powershellPath = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+        $scriptPath = Join-Path $script:AppDir "MindfulTimer.ps1"
+        $shell = New-Object -ComObject WScript.Shell
+        $shortcut = $shell.CreateShortcut($shortcutPath)
+        $shortcut.TargetPath = $powershellPath
+        $shortcut.Arguments = "-NoProfile -STA -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$scriptPath`""
+        $shortcut.WorkingDirectory = $script:AppDir
+        $shortcut.Description = "Mindful Timer - intentional browsing and notes"
+        if (Test-Path -LiteralPath $script:IconPath) {
+            $shortcut.IconLocation = "$($script:IconPath),0"
+        }
+        $shortcut.WindowStyle = 7
+        $shortcut.Save()
+        return (Test-Path -LiteralPath $shortcutPath)
+    }
+    catch {
+        return $false
+    }
+}
+
 function Open-RawRecordsFile {
     try {
         Start-Process -FilePath "notepad.exe" -ArgumentList "`"$script:RecordsMarkdownPath`""
@@ -528,6 +568,9 @@ function New-NotesLibraryWindow {
     $libraryXaml = [System.IO.File]::ReadAllText($libraryPath, [System.Text.Encoding]::UTF8)
     $reader = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($libraryXaml))
     try { $library = [Windows.Markup.XamlReader]::Load($reader) } finally { $reader.Dispose() }
+    if (Test-Path -LiteralPath $script:IconPath) {
+        $library.Icon = [System.Windows.Media.Imaging.BitmapFrame]::Create([Uri]::new($script:IconPath))
+    }
 
     Apply-LibraryTheme -LibraryWindow $library -Theme $script:CurrentTheme
 
@@ -804,7 +847,21 @@ Apply-Theme -Theme (Get-InitialTheme)
 Restore-Draft
 Set-StartLayout
 
+if (-not ($SmokeTest -or $RenderPreview -or $RenderDesignOptions)) {
+    [void](Ensure-DesktopShortcut)
+}
+
 if ($SmokeTest) {
+    $shortcutTestDirectory = Join-Path $script:DataDir "shortcut-test"
+    if (-not (Ensure-DesktopShortcut -TargetDirectory $shortcutTestDirectory)) {
+        throw "Desktop shortcut creation failed."
+    }
+    $shortcutTestPath = Join-Path $shortcutTestDirectory "Mindful Timer.lnk"
+    $shortcutShell = New-Object -ComObject WScript.Shell
+    $shortcutTest = $shortcutShell.CreateShortcut($shortcutTestPath)
+    if (-not $shortcutTest.IconLocation.Contains("MindfulTimer.ico")) {
+        throw "Desktop shortcut icon was not configured."
+    }
     $window.Show()
     if (-not $window.Topmost) { throw "Start state should be topmost." }
     if ($null -eq $StartLibraryButton) { throw "Start screen Notes Library entry is missing." }

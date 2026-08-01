@@ -10,6 +10,8 @@
 Start Mindful Timer.cmd
 ```
 
+首次启动时会自动在桌面创建带专用图标的 `Mindful Timer` 快捷方式。以后直接双击桌面图标即可。请不要移动解压后的程序文件夹；如果移动了，重新双击一次 `Start Mindful Timer.cmd` 会更新快捷方式路径。
+
 应用基于 Windows 自带的 PowerShell 5.1 与 WPF，不需要安装 .NET SDK、Node.js 或浏览器扩展。
 
 如果 Windows 显示脚本运行提示，确认文件来自当前项目后再继续。启动脚本只运行同目录下的 `MindfulTimer.ps1`，不下载内容、不联网、不修改系统设置。
@@ -50,6 +52,7 @@ Start Mindful Timer.cmd
 ## 操作细节
 
 - 拖动顶部 `MINDFUL` 区域移动悬浮窗。
+- 首次运行自动创建桌面快捷方式，主窗口和任务栏使用同一枚 Mindful 图标。
 - 线性太阳/月亮按钮：切换白天/黑夜；应用会记住上次选择。
 - 启动页和正在积累的计时窗口置顶；完成页和笔记库不置顶。
 - `Enter`：在目的输入框中开始。
