@@ -10,7 +10,7 @@
     ResizeMode="NoResize"
     AllowsTransparency="True"
     Background="Transparent"
-    Topmost="False"
+    Topmost="True"
     ShowInTaskbar="True">
     <Window.Resources>
         <SolidColorBrush x:Key="CanvasBrush" Color="#F7F3E9" />

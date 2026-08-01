@@ -111,6 +111,7 @@ $script:CurrentPurpose = ""
 $script:CurrentStartTime = $null
 $script:CurrentTheme = "light"
 $script:NotesLibraryWindow = $null
+$script:RestoreTopmostAfterLibrary = $true
 
 function Set-ThemeBrush {
     param(
@@ -226,7 +227,7 @@ function Format-Elapsed {
 }
 
 function Set-StartLayout {
-    $window.Topmost = $false
+    $window.Topmost = $true
     $StartPanel.Visibility = "Visible"
     $TimerPanel.Visibility = "Collapsed"
     $DonePanel.Visibility = "Collapsed"
@@ -648,7 +649,7 @@ function New-NotesLibraryWindow {
     }.GetNewClosure())
     $library.Add_Closed({
         $script:NotesLibraryWindow = $null
-        $window.Topmost = $script:IsActive
+        $window.Topmost = $script:RestoreTopmostAfterLibrary
     })
 
     & $refreshList
@@ -661,6 +662,7 @@ function Show-NotesLibrary {
             $script:NotesLibraryWindow.Activate() | Out-Null
             return
         }
+        $script:RestoreTopmostAfterLibrary = $window.Topmost
         $window.Topmost = $false
         $script:NotesLibraryWindow = New-NotesLibraryWindow
         $script:NotesLibraryWindow.Show()
@@ -804,8 +806,12 @@ Set-StartLayout
 
 if ($SmokeTest) {
     $window.Show()
-    if ($window.Topmost) { throw "Start state should not be topmost." }
+    if (-not $window.Topmost) { throw "Start state should be topmost." }
     if ($null -eq $StartLibraryButton) { throw "Start screen Notes Library entry is missing." }
+    Show-NotesLibrary
+    if ($window.Topmost) { throw "Start window should pause topmost while Notes Library is open." }
+    $script:NotesLibraryWindow.Close()
+    if (-not $window.Topmost) { throw "Start window should restore topmost after Notes Library closes." }
     Apply-Theme -Theme "dark" -Persist
     $themeSettings = [System.IO.File]::ReadAllText($script:SettingsPath, [System.Text.Encoding]::UTF8)
     if (-not $themeSettings.Contains("dark")) { throw "Dark theme persistence check failed." }

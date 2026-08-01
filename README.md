@@ -6,7 +6,7 @@
 
 ## 下载
 
-从 [Releases](https://github.com/silver-lynn/mindful-scrolling/releases) 下载最新的 `MindfulTimer-Windows-v0.5.zip`，解压后双击：
+从 [Releases](https://github.com/silver-lynn/mindful-scrolling/releases) 下载最新的 `MindfulTimer-Windows-v0.6.zip`，解压后双击：
 
 ```text
 Start Mindful Timer.cmd
@@ -27,7 +27,7 @@ Mindful 不阻止你打开内容，而是在注意力被带走之前保留一个
 ## 当前功能
 
 - 起始页可直接打开笔记库，也可以填写目的后开始积累
-- 正向计时期间自动置顶；其他状态与笔记库不置顶
+- 启动页和正向计时期间自动置顶；完成页与笔记库不置顶
 - 计时过程中展开记事，草稿每两秒自动保存
 - 完成后记录目的、时长、时间和笔记
 - 应用内笔记库支持搜索、详情阅读和复制全文
@@ -52,4 +52,3 @@ Mindful 不阻止你打开内容，而是在注意力被带走之前保留一个
 当前版本不检测浏览器或目标程序，也不做强制拦截。它先验证最小闭环是否有效：一个具体目的，是否能帮助用户在浏览结束后留下可复用的内容。
 
 欢迎通过 Issues 反馈使用体验与问题。
-
