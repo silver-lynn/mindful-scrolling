@@ -10,7 +10,7 @@
 
 ## 下载
 
-从 [Releases](https://github.com/silver-lynn/mindful-scrolling/releases) 下载最新的 `MindfulTimer-Windows-v0.7.zip`，解压后双击：
+从 [Releases](https://github.com/silver-lynn/mindful-scrolling/releases) 下载最新的 `MindfulTimer-Windows-v0.8.zip`，解压后双击：
 
 ```text
 Start Mindful Timer.cmd
@@ -37,7 +37,7 @@ Mindful 不阻止你打开内容，而是在注意力被带走之前保留一个
 - 计时过程中展开记事，草稿每两秒自动保存
 - 完成后记录目的、时长、时间和笔记
 - 应用内笔记库支持搜索、详情阅读和复制全文
-- 白天／黑夜主题一键切换并记住选择
+- 主窗口与笔记库都能切换白天／黑夜，双向同步并记住选择
 - 所有内容只保存在本机
 
 ![Mindful Notes 黑夜模式](WindowsApp/preview/dark-05-notes-library.png)

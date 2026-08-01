@@ -548,6 +548,19 @@ function Apply-LibraryTheme {
         $converted = [System.Windows.Media.ColorConverter]::ConvertFromString($entry.Value)
         $LibraryWindow.Resources[$entry.Key] = [System.Windows.Media.SolidColorBrush]::new($converted)
     }
+    $libraryMoonIcon = $LibraryWindow.FindName("LibraryMoonIcon")
+    $librarySunIcon = $LibraryWindow.FindName("LibrarySunIcon")
+    $libraryThemeButton = $LibraryWindow.FindName("LibraryThemeButton")
+    if ($Theme -eq "dark") {
+        if ($null -ne $libraryMoonIcon) { $libraryMoonIcon.Visibility = "Collapsed" }
+        if ($null -ne $librarySunIcon) { $librarySunIcon.Visibility = "Visible" }
+        if ($null -ne $libraryThemeButton) { $libraryThemeButton.ToolTip = $script:Strings.switchToLight }
+    }
+    else {
+        if ($null -ne $libraryMoonIcon) { $libraryMoonIcon.Visibility = "Visible" }
+        if ($null -ne $librarySunIcon) { $librarySunIcon.Visibility = "Collapsed" }
+        if ($null -ne $libraryThemeButton) { $libraryThemeButton.ToolTip = $script:Strings.switchToDark }
+    }
     $shadow = $LibraryWindow.FindName("LibraryShadow")
     if ($null -ne $shadow) {
         if ($Theme -eq "dark") {
@@ -576,6 +589,7 @@ function New-NotesLibraryWindow {
 
     $dragBar = $library.FindName("LibraryDragBar")
     $closeButton = $library.FindName("LibraryCloseButton")
+    $libraryThemeButton = $library.FindName("LibraryThemeButton")
     $searchInput = $library.FindName("LibrarySearchInput")
     $list = $library.FindName("LibraryList")
     $count = $library.FindName("LibraryCount")
@@ -652,6 +666,10 @@ function New-NotesLibraryWindow {
         }
     }.GetNewClosure())
     $closeButton.Add_Click({ $library.Close() }.GetNewClosure())
+    $libraryThemeButton.Add_Click({
+        $nextTheme = if ($script:CurrentTheme -eq "dark") { "light" } else { "dark" }
+        Apply-Theme -Theme $nextTheme -Persist
+    })
     $openRawButton.Add_Click({ Open-RawRecordsFile })
     $list.Add_SelectionChanged({
         if ($null -ne $list.SelectedItem) { & $showDetail $list.SelectedItem }
@@ -895,11 +913,17 @@ if ($SmokeTest) {
     if ($script:NotesLibraryWindow.Topmost) { throw "Notes Library should not be topmost." }
     $libraryListTest = $script:NotesLibraryWindow.FindName("LibraryList")
     $libraryPurposeTest = $script:NotesLibraryWindow.FindName("DetailPurpose")
+    $libraryThemeButtonTest = $script:NotesLibraryWindow.FindName("LibraryThemeButton")
     if ($libraryListTest.Items.Count -lt 1) { throw "Notes Library did not load archived records." }
     if (-not $libraryPurposeTest.Text.Contains($script:Strings.previewPurpose)) { throw "Notes Library detail selection check failed." }
-    Apply-Theme -Theme "dark"
+    $libraryThemeButtonTest.RaiseEvent([System.Windows.RoutedEventArgs]::new([System.Windows.Controls.Button]::ClickEvent))
+    if ($script:CurrentTheme -ne "dark") { throw "Notes Library theme toggle did not update global theme." }
     $libraryCanvasTest = $script:NotesLibraryWindow.Resources["CanvasBrush"].Color.ToString()
     if ($libraryCanvasTest -ne "#FF15181B") { throw "Notes Library dark theme sync check failed." }
+    $mainCanvasTest = $window.Resources["CanvasBrush"].Color.ToString()
+    if ($mainCanvasTest -ne "#FF15181B") { throw "Main window did not sync from Notes Library theme toggle." }
+    $libraryThemeButtonTest.RaiseEvent([System.Windows.RoutedEventArgs]::new([System.Windows.Controls.Button]::ClickEvent))
+    if ($script:CurrentTheme -ne "light") { throw "Notes Library theme toggle did not return to light theme." }
     $script:NotesLibraryWindow.Close()
     $window.Close()
     Write-Output "Mindful Timer smoke test passed: theme toggle, timer, notes library, Markdown and JSON archive."
