@@ -1,0 +1,35 @@
+{
+  "restoreHint": "已恢复上次未结束的目的和笔记",
+  "saved": "已保存",
+  "saving": "保存中…",
+  "purposeRequired": "先写下这次的目的。",
+  "closePrompt": "当前计时仍在进行。是否结束并保存这次记录？\n\n是：保存后退出\n否：放弃后退出\n取消：继续计时",
+  "closeTitle": "Mindful Timer",
+  "openError": "无法打开积累文件：",
+  "saveError": "无法保存记录："
+  ,"expandNotes": "展开记事  ↓"
+  ,"collapseNotes": "收起记事  ↑"
+  ,"dirty": "•"
+  ,"separator": " · "
+  ,"previewPurpose": "收集 3 个值得复用的 AI 产品交互"
+  ,"previewNotes": "• 为什么这个 onboarding 让人愿意继续？\n• 记录一个可以迁移到自己产品的细节。"
+  ,"themeMoon": "☾"
+  ,"themeSun": "☀"
+  ,"switchToDark": "切换到夜间模式"
+  ,"switchToLight": "切换到白天模式"
+  ,"searchPlaceholder": "搜索目的或笔记"
+  ,"currentDraftKind": "当前草稿"
+  ,"sessionKind": "已完成 Session"
+  ,"ongoingMeta": "进行中 · 自动保存"
+  ,"autoSavedHint": "每两秒自动保存到 current-note.md"
+  ,"archivedHint": "已归档到 records.md"
+  ,"noNotes": "这次还没有写下笔记。"
+  ,"copySuccess": "已复制"
+  ,"copyFull": "复制全文"
+  ,"countFormat": "{0} 条积累"
+  ,"libraryError": "无法打开笔记库："
+  ,"previewPurpose2": "理解一个 agent memory 的设计选择"
+  ,"previewNotes2": "长期记忆不应该只是更大的上下文。\n\n值得继续研究：什么应该被遗忘，什么应该由用户确认后留下。"
+  ,"previewPurpose3": "观察 builder 如何组织 AI 工作流"
+  ,"previewNotes3": "把模型能力、工具权限和可验证结果分开表达，用户会更容易建立信任。"
+}

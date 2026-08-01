@@ -1,0 +1,22 @@
+.DS_Store
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+.swiftpm/
+WindowsApp/test-output/
+WindowsApp/data/
+
+# Windows public beta release hygiene
+dist/
+WindowsApp/preview/*
+!WindowsApp/preview/light-01-start.png
+!WindowsApp/preview/dark-05-notes-library.png
+
+# Local iOS prototype is intentionally excluded from the Windows public beta
+Config/
+Extensions/
+MindfulScrolling/
+Shared/
+docs/
+project.yml
